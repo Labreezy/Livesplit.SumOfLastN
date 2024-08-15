@@ -66,6 +66,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetPath)" C:\Livesplit\Components\</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(TargetPath)" C:\Users\yourt\Downloads\hedge\livesplit\Components</PostBuildEvent>
   </PropertyGroup>
 </Project>

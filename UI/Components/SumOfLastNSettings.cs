@@ -24,10 +24,15 @@ namespace Livesplit.UI.Components
             numSplitsNumUpDown.DataBindings.Clear();
             numSplitsNumUpDown.DataBindings.Add("Value", this, "NumSplits", false, DataSourceUpdateMode.OnPropertyChanged);
         }
+
+        public void SetNSplitsUpDownEnabled(bool enabled)
+        {
+            numSplitsNumUpDown.Enabled = enabled;
+        }
         private int CreateSettingsNode(XmlDocument document, XmlElement parent)
         {
             return SettingsHelper.CreateSetting(document, parent, "Version", "1.0") ^
-                SettingsHelper.CreateSetting<int>(document, parent, "NumSplits", 5);
+                SettingsHelper.CreateSetting<int>(document, parent, "NumSplits", NumSplits);
         }
         public XmlNode GetSettings(XmlDocument document)
         {
@@ -46,5 +51,6 @@ namespace Livesplit.UI.Components
             NumSplits = SettingsHelper.ParseInt(element["NumSplits"], 1);
 
         }
+
     }
 }

@@ -42,6 +42,7 @@ namespace LiveSplit.UI.Components
             RunningTotalTime = Time.Zero;
             
             NumTotaledSplits = 0;
+            Settings.SetNSplitsUpDownEnabled(false);
         }
 
         void state_OnSplitChange(object sender, EventArgs e)
@@ -51,12 +52,14 @@ namespace LiveSplit.UI.Components
             {
                 NumTotaledSplits++;
                 RunningTotalTime = CurrentState.Run[NumTotaledSplits - 1].SplitTime;
+                InternalComponent.InformationName = $"Running Total ({NumTotaledSplits}/{Settings.NumSplits} Splits)";
             } else
             {
                 
                 int EndIndex = CurrentState.CurrentSplitIndex - 1;
                 int StartIndex = EndIndex - Settings.NumSplits;
                 RunningTotalTime = CurrentState.Run[EndIndex].SplitTime - CurrentState.Run[StartIndex].SplitTime;
+                InternalComponent.InformationName = $"Running Total ({Settings.NumSplits} Splits)";
                 Log.Info(RunningTotalTime.RealTime.Value.ToString("mm\\:ss\\.ff"));
 
 
@@ -82,6 +85,7 @@ namespace LiveSplit.UI.Components
         void state_OnReset(object sender, TimerPhase e)
         {
             NumTotaledSplits = 0;
+            Settings.SetNSplitsUpDownEnabled(true);
         }
         public SumOfLastNComponent(LiveSplitState state)
         {
@@ -151,7 +155,13 @@ namespace LiveSplit.UI.Components
         
         public void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode)
         {
-            InternalComponent.InformationName = $"Running Total ({Settings.NumSplits} Splits)";
+            if (NumTotaledSplits == 0 || NumTotaledSplits >= Settings.NumSplits)
+            {
+                InternalComponent.InformationName = $"Running Total ({Settings.NumSplits} Splits)";
+            } else
+            {
+                InternalComponent.InformationName = $"Running Total ({NumTotaledSplits}/{Settings.NumSplits} Splits)";
+            }
             if (CurrentState.CurrentTimingMethod == TimingMethod.RealTime)
             {
                 InternalComponent.InformationValue = $@"{RunningTotalTime.RealTime:mm\:ss\.ff}";
