@@ -81,7 +81,14 @@ namespace LiveSplit.UI.Components
             if (CurrentState.CurrentSplitIndex < Settings.NumSplits - 1)
             {
                 NumTotaledSplits--;
-                RunningTotalTime = CurrentState.Run[NumTotaledSplits - 1].SplitTime;
+                if (NumTotaledSplits == 0)
+                {
+                    RunningTotalTime = Time.Zero;
+                }
+                else
+                {
+                    RunningTotalTime = CurrentState.Run[NumTotaledSplits - 1].SplitTime;
+                }
             }
             else
             {
