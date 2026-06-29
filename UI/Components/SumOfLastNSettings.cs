@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using System.Xml;
 using LiveSplit.UI;
 
-namespace Livesplit.UI.Components
+namespace LiveSplit.UI.Components
 {
     public partial class SumOfLastNSettings : UserControl
     {

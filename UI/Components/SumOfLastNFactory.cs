@@ -2,13 +2,13 @@
 using LiveSplit.Model;
 using LiveSplit.UI.Components;
 
-namespace Livesplit.UI.Components
+namespace LiveSplit.UI.Components
 {
     public class SumOfLastNFactory : IComponentFactory
     {
         public string ComponentName => "Sum Of Last N";
 
-        public string Description => "Displays the sum of the last N completed splits.";
+        public string Description => "Displays the best sum of the last N completed splits.";
 
         // The sub-menu this component will appear under when adding the component to the layout.
         public ComponentCategory Category => ComponentCategory.Information;
@@ -27,6 +27,6 @@ namespace Livesplit.UI.Components
         // GitHub or somewhere, you can ignore this.
         public string XMLURL => UpdateURL + "";
 
-        public Version Version => Version.Parse("0.1.0");
+        public Version Version => Version.Parse("0.2.0");
     }
 }

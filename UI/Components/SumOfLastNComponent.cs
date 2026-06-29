@@ -1,4 +1,4 @@
-﻿using Livesplit.UI.Components;
+﻿using LiveSplit.UI.Components;
 using LiveSplit.Model;
 using LiveSplit.Options;
 using System;
@@ -57,9 +57,18 @@ namespace LiveSplit.UI.Components
             {
                 
                 int EndIndex = CurrentState.CurrentSplitIndex - 1;
+                if (CurrentState.Run[EndIndex].Name.ToLower().Contains("menu") || EndIndex % 2 != 0)
+                {
+                    Log.Info($"Skipping Index {EndIndex}");
+                    return;
+                }
                 int StartIndex = EndIndex - Settings.NumSplits;
-                RunningTotalTime = CurrentState.Run[EndIndex].SplitTime - CurrentState.Run[StartIndex].SplitTime;
-                InternalComponent.InformationName = $"Running Total ({Settings.NumSplits} Splits)";
+                Time currentRunningTotal = CurrentState.Run[EndIndex].SplitTime - CurrentState.Run[StartIndex].SplitTime;
+                if (RunningTotalTime.Equals(Time.Zero) || currentRunningTotal.GameTime.Value < RunningTotalTime.GameTime.Value)
+                {
+                    RunningTotalTime = currentRunningTotal;
+                }
+                    InternalComponent.InformationName = $"Best Sum of Last {Settings.NumSplits} Splits";
                 Log.Info(RunningTotalTime.RealTime.Value.ToString("mm\\:ss\\.ff"));
 
 
@@ -76,7 +85,13 @@ namespace LiveSplit.UI.Components
             }
             else
             {
+                if (CurrentState.CurrentSplit.Name.ToLower().Contains("menu") || CurrentState.CurrentSplitIndex % 2 == 0)
+                {
+                    Log.Info($"Skipping Index {CurrentState.CurrentSplitIndex}");
+                    return;
+                }
                 int EndIndex = CurrentState.CurrentSplitIndex - 1;
+                
                 int StartIndex = EndIndex - Settings.NumSplits;
                 RunningTotalTime = CurrentState.Run[EndIndex].SplitTime - CurrentState.Run[StartIndex].SplitTime;
 
@@ -157,7 +172,7 @@ namespace LiveSplit.UI.Components
         {
             if (NumTotaledSplits == 0 || NumTotaledSplits >= Settings.NumSplits)
             {
-                InternalComponent.InformationName = $"Running Total ({Settings.NumSplits} Splits)";
+                InternalComponent.InformationName = $"Best Sum of {Settings.NumSplits} Splits";
             } else
             {
                 InternalComponent.InformationName = $"Running Total ({NumTotaledSplits}/{Settings.NumSplits} Splits)";
